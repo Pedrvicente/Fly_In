@@ -20,7 +20,7 @@ hub: final_stretch3 5 2 [zone=priority color=cyan]
 end_hub: goal 6 1 [color=green max_drones=8]
 
 # Main path connections
-connection: start-maze_a1
+connection : start-maze_a1
 connection: maze_a1-maze_a2
 connection: maze_a1-maze_b1
 connection: maze_b1-maze_b2

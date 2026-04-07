@@ -218,7 +218,7 @@ class Parser:
         """Parse a connection definition line into a Connection object.
 
         Args:
-            parts: Tokenized line parts from a connection definition line.
+            parts: The result of .strip().split() of a line of the map.
             graph: The graph being built, used to validate zone names.
 
         Returns:
@@ -322,12 +322,14 @@ class Parser:
                         parts = rest_of_lines.strip().split()
                         zone = self.parse_zone(parts, graph)
                         if rest_of_lines.startswith('start_hub:'):
+                            # verificar que start_hub já não existia
                             if graph.start is None:
                                 graph.start = zone
                             else:
                                 print('start_hub already existed')
                                 sys.exit(1)
                         elif rest_of_lines.startswith('end_hub:'):
+                            # verificar que end_hub já não existia
                             if graph.end is None:
                                 graph.end = zone
                             else:
