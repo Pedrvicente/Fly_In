@@ -34,11 +34,13 @@ class Scheduler:
     def run(self) -> list[str]:
         turns = 0
         output = []
+        history = []
+        movements = []
         while self.zone_occupancy[self.graph.end] < self.number_of_drones:
-            print(f'Turno {turns}: occupancy={self.zone_occupancy}')
             sorted_drones = sorted(self.drones, key=lambda d: d.path_index, reverse=True)
             turns += 1
             turn_moves = []
+            turn_movements = []
             for drone in sorted_drones:
                 if drone.position == self.graph.end:
                     continue
@@ -54,8 +56,15 @@ class Scheduler:
                     self.zone_occupancy[current_zone] -= 1
                     drone.move_drone(next_zone, next_index)
                     turn_moves.append(f"D{drone.drone_id}-{next_zone.name}")
+                    turn_movements.append({'drone_id': drone.drone_id,
+                                           'from': current_zone,
+                                           'to': next_zone})
+                    # print(turn_movements)
+            movements.append(turn_movements)
+            history.append(self.zone_occupancy.copy())
             output.append(' '.join(turn_moves))
-        return output
+            # print(f'Turno {turns}: occupancy={self.zone_occupancy}')
+        return output, history, movements
 
 
 if __name__ == '__main__':
@@ -71,11 +80,32 @@ if __name__ == '__main__':
         print('No path found between start and end')
         sys.exit(1)
     
-    console = Console()
-    console.print("[green]zona normal[/green]")
-    console.print("[red]zona blocked[/red]")
-    console.print("[yellow]zona restricted[/yellow]")
-    console.print("[blue]zona priority[/blue]")
+    import matplotlib.pyplot as plt
+
+    # # posições
+    # positions = {
+    #     'hub': (0, 0),
+    #     'roof1': (3, 4),
+    #     'corridorA': (4, 3),
+    #     'goal': (10, 10)
+    # }
+
+    # # nós
+    # x = [p[0] for p in positions.values()]
+    # y = [p[1] for p in positions.values()]
+    # plt.scatter(x, y, s=300)
+
+    # # labels
+    # for name, (px, py) in positions.items():
+    #     plt.annotate(name, (px, py))
+
+    # # arestas
+    # edges = [('hub', 'roof1'), ('hub', 'corridorA'), ('roof1', 'goal')]
+    # for a, b in edges:
+    #     plt.plot([positions[a][0], positions[b][0]], 
+    #             [positions[a][1], positions[b][1]], 'k-')
+
+    # plt.show()
 
     sch = Scheduler(graph, path)
     print(sch.run())
