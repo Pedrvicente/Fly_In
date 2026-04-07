@@ -1,5 +1,4 @@
 from parser import Zone, Graph
-from pathfinder import Pathfinder
 
 
 class Drone:
@@ -125,21 +124,4 @@ class Scheduler:
             movements.append(turn_movements)
             history.append(self.zone_occupancy.copy())
             output.append(' '.join(turn_moves))
-        return output, history, movements
-
-
-if __name__ == '__main__':
-    import sys
-    from parser import Parser
-
-    parser = Parser()
-    graph = parser.parse(sys.argv[1])
-
-    pathfinder = Pathfinder()
-    path = pathfinder.find_path(graph)
-    if not path:
-        print('No path found between start and end')
-        sys.exit(1)
-
-    sch = Scheduler(graph, path)
-    print(sch.run())
+        return output, history, movementss

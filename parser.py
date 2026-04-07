@@ -59,12 +59,12 @@ class Zone:
 
 
 class Connection:
-    """Represents a bidirectional connection between two zones.
+    """Represents a connection between two zones.
 
     Attributes:
-        zone_1: First zone endpoint.
-        zone_2: Second zone endpoint.
-        max_link: Maximum drones traversing this connection simultaneously.
+        zone_1: First zone.
+        zone_2: Second zone.
+        max_link: Maximum drones circulating this connection simultaneously.
     """
 
     def __init__(
@@ -75,7 +75,7 @@ class Connection:
         Args:
             zone_1: First zone endpoint.
             zone_2: Second zone endpoint.
-            max_link: Maximum simultaneous traversal capacity. Defaults to 1.
+            max_link: Maximum simultaneous capacity. Defaults to 1.
         """
         self.zone_1 = zone_1
         self.zone_2 = zone_2
@@ -168,7 +168,7 @@ class Parser:
         """Parse a hub definition line into a Zone object.
 
         Args:
-            parts: Tokenized line parts from a hub definition line.
+            parts: The result of .strip().split() of a line of the map.
             graph: The graph being built, used to check for duplicate names.
 
         Returns:
