@@ -124,4 +124,4 @@ class Scheduler:
             movements.append(turn_movements)
             history.append(self.zone_occupancy.copy())
             output.append(' '.join(turn_moves))
-        return output, history, movementss
+        return output, history, movements
