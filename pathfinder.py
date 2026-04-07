@@ -54,16 +54,3 @@ class Pathfinder:
                     heapq.heappush(fila, (new_cost, score, id(n), n))
                     previous[n] = current_zone
         return []
-
-
-if __name__ == '__main__':
-    import sys
-    from parser import Parser
-
-    parser = Parser()
-    graph = parser.parse(sys.argv[1])
-
-    pathfinder = Pathfinder()
-    path = pathfinder.find_path(graph)
-    for zone in path:
-        print(zone.name)
