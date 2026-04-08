@@ -36,7 +36,11 @@ class Visualizer:
             state: Mapping of each zone to its current drone count.
         """
         for zone in self.all_zones:
-            self.ax.scatter(zone.x, zone.y, c=zone.color, s=300)
+            try:
+                self.ax.scatter(zone.x, zone.y, c=zone.color, s=300)
+            except ValueError:
+                self.ax.scatter(zone.x, zone.y, c='gray', s=300)
+                
             self.ax.annotate(
                 f"zone name: {zone.name}\n"
                 f"capacity: {state[zone]}/{zone.max_drones}",
