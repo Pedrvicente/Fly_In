@@ -42,7 +42,7 @@ class Visualizer:
                 self.ax.scatter(zone.x, zone.y, c='gray', s=300)
                 
             self.ax.annotate(
-                f"zone name: {zone.name}\n"
+                f"{zone.type_zone}\n"
                 f"capacity: {state[zone]}/{zone.max_drones}",
                 (zone.x + 0.15, zone.y), fontsize=8)
         for connection in self.connections:
