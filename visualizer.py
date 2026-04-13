@@ -44,7 +44,7 @@ class Visualizer:
             self.ax.annotate(
                 f"{zone.type_zone}\n"
                 f"capacity: {state[zone]}/{zone.max_drones}",
-                (zone.x + 0.15, zone.y), fontsize=8)
+                (zone.x + 0.20, zone.y), fontsize=8)
         for connection in self.connections:
             self.ax.plot(
                 [connection.zone_1.x, connection.zone_2.x],

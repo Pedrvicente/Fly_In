@@ -20,6 +20,7 @@ class Drone:
         self.drone_id = drone_id
         self.position = start
         self.path_index = 0
+        self.hold_drone = 1
 
     def __repr__(self) -> str:
         """Return string representation of the drone.
@@ -38,6 +39,8 @@ class Drone:
         """
         self.position = next_zone
         self.path_index = next_index
+        if next_zone.type_zone == 'restricted':
+            self.hold_drone = 2
 
 
 class Scheduler:
@@ -103,14 +106,21 @@ class Scheduler:
             for drone in sorted_drones:
                 if drone.position == self.graph.end:
                     continue
+                if drone.hold_drone > 1:
+                    drone.hold_drone -= 1
+                    continue
                 next_index = drone.path_index + 1
                 next_zone = self.path[next_index]
                 current_zone = drone.position
+                can_move = False
+                occupancy = self.zone_occupancy[next_zone]
+
+                # Capacity check; end hub is treated as unlimited.
                 if next_zone == self.graph.end:
                     can_move = True
-                else:
-                    occupancy = self.zone_occupancy[next_zone]
-                    can_move = occupancy < next_zone.max_drones
+                elif occupancy < next_zone.max_drones:
+                    can_move = True
+
                 if can_move:
                     self.zone_occupancy[next_zone] += 1
                     self.zone_occupancy[current_zone] -= 1
@@ -123,5 +133,6 @@ class Scheduler:
                     })
             movements.append(turn_movements)
             history.append(self.zone_occupancy.copy())
-            output.append(' '.join(turn_moves))
+            if turn_moves:
+                output.append(' '.join(turn_moves))
         return output, history, movements
