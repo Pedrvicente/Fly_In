@@ -25,6 +25,8 @@ class Visualizer:
         """
         self.graph = graph
         self.connections = graph.connections
+        assert graph.start is not None
+        assert graph.end is not None
         self.all_zones = [graph.start] + graph.zones + [graph.end]
         plt.ion()
         self.fig, self.ax = plt.subplots()
@@ -40,7 +42,7 @@ class Visualizer:
                 self.ax.scatter(zone.x, zone.y, c=zone.color, s=300)
             except ValueError:
                 self.ax.scatter(zone.x, zone.y, c='gray', s=300)
-                
+
             self.ax.annotate(
                 f"{zone.type_zone}\n"
                 f"capacity: {state[zone]}/{zone.max_drones}",
@@ -71,7 +73,7 @@ class Visualizer:
             for progress in [0, 0.25, 0.5, 0.75, 1.0]:
                 all_frames.append((n, m, progress))
 
-        def update(frame: tuple) -> None:
+        def update(frame: tuple) -> list:
             """Update the animation for a single frame.
 
             Args:
@@ -89,6 +91,7 @@ class Visualizer:
                     move['to'].y - move['from'].y
                 )
                 self.ax.scatter(x, y, c='black', s=200)
+            return []
 
         self.ani = FuncAnimation(
             self.fig, update, frames=all_frames, interval=300

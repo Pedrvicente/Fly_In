@@ -67,6 +67,8 @@ class Scheduler:
         """
         self.graph = graph
         self.path = path
+        assert self.graph.start is not None
+        assert self.graph.end is not None
         self.number_of_drones = self.graph.number_of_drones
         start_list = [self.graph.start]
         end_list = [self.graph.end]

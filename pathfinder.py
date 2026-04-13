@@ -24,9 +24,11 @@ class Pathfinder:
         """
         start = graph.start
         end = graph.end
+        assert start is not None
+        assert end is not None
         fila = [(0, 0, id(start), start)]
         visited = {start}
-        previous = {}
+        previous: dict[Zone, Zone] = {}
 
         while fila:
             cost, priority_cost, _, current_zone = heapq.heappop(fila)
