@@ -26,4 +26,4 @@ lint:
 
 lint-strict:
 	flake8 .
-	mypy . --strict
+	python3 -m mypy . --strict
