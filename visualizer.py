@@ -40,8 +40,9 @@ class Visualizer:
             state: Mapping of each zone to its current drone count.
         """
         for zone in self.all_zones:
+            color = zone.color if zone.color is not None else 'gray'
             try:
-                self.ax.scatter(zone.x, zone.y, c=zone.color, s=300)
+                self.ax.scatter(zone.x, zone.y, c=color, s=300)
             except ValueError:
                 self.ax.scatter(zone.x, zone.y, c='gray', s=300)
 
