@@ -1,3 +1,5 @@
+from typing import Any
+
 from parser import Graph, Zone
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -54,7 +56,9 @@ class Visualizer:
             )
 
     def animate(
-        self, history: list[dict], movements: list[list[dict]]
+        self,
+        history: list[dict[Zone, int]],
+        movements: list[list[dict[str, Any]]]
     ) -> None:
         """Animate the simulation by interpolating drone positions per turn.
 
@@ -73,7 +77,9 @@ class Visualizer:
             for progress in [0, 0.25, 0.5, 0.75, 1.0]:
                 all_frames.append((n, m, progress))
 
-        def update(frame: tuple) -> list:
+        def update(
+            frame: tuple[dict[Zone, int], list[dict[str, Any]], float],
+        ) -> list[Any]:
             """Update the animation for a single frame.
 
             Args:

@@ -1,3 +1,5 @@
+from typing import Any
+
 from parser import Zone, Graph
 
 
@@ -73,14 +75,16 @@ class Scheduler:
         start_list = [self.graph.start]
         end_list = [self.graph.end]
         self.all_zones = start_list + self.graph.zones + end_list
-        self.zone_occupancy: dict = {i: 0 for i in self.all_zones}
+        self.zone_occupancy: dict[Zone, int] = {i: 0 for i in self.all_zones}
         self.zone_occupancy[self.graph.start] = self.number_of_drones
 
         self.drones: list[Drone] = []
         for i in range(1, self.graph.number_of_drones + 1):
             self.drones.append(Drone(i, self.graph.start))
 
-    def run(self) -> tuple[list[str], list[dict], list[list[dict]]]:
+    def run(
+        self,
+    ) -> tuple[list[str], list[dict[Zone, int]], list[list[dict[str, Any]]]]:
         """Run the simulation until all drones reach the end zone.
 
         On each turn, drones are processed in order of advancement along
@@ -92,6 +96,7 @@ class Scheduler:
                 - history: List of zone occupancy snapshots per turn.
                 - movements: List of per-turn movement detail records.
         """
+        assert self.graph.end is not None
         turns = 0
         output = []
         history = []
@@ -104,7 +109,7 @@ class Scheduler:
             )
             turns += 1
             turn_moves = []
-            turn_movements: list[dict] = []
+            turn_movements: list[dict[str, Any]] = []
             for drone in sorted_drones:
                 if drone.position == self.graph.end:
                     continue
